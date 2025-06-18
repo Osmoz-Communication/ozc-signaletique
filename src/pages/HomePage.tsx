@@ -148,6 +148,90 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Special Offers */}
+      <section className="py-16 bg-gradient-to-r from-red-50 to-orange-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Offres Spéciales</h2>
+            <p className="text-gray-600">Profitez de nos promotions exceptionnelles</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Offre pack sécurité */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-red-200">
+              <div className="bg-red-500 text-white p-4 text-center">
+                <span className="font-bold text-lg">PACK SÉCURITÉ INCENDIE</span>
+                <div className="text-3xl font-bold mt-2">-20%</div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-bold text-xl mb-3">Kit complet de signalisation incendie</h3>
+                <ul className="text-gray-600 space-y-2 mb-4">
+                  <li>• 4 panneaux sortie de secours LED</li>
+                  <li>• 2 extincteurs CO2 5kg</li>
+                  <li>• 6 panneaux d'évacuation</li>
+                  <li>• Installation incluse</li>
+                </ul>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-gray-500 line-through text-lg">450€</span>
+                    <span className="text-red-600 font-bold text-2xl ml-2">360€</span>
+                  </div>
+                  <Link 
+                    to="/products/signalisation-securite"
+                    className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                  >
+                    Découvrir
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Offre signalétique interne */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-blue-200">
+              <div className="bg-blue-500 text-white p-4 text-center">
+                <span className="font-bold text-lg">SIGNALÉTIQUE PREMIUM</span>
+                <div className="text-3xl font-bold mt-2">-15%</div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-bold text-xl mb-3">Collection signalétique interne</h3>
+                <ul className="text-gray-600 space-y-2 mb-4">
+                  <li>• Plaques directionnelles aluminium</li>
+                  <li>• Identification des bureaux</li>
+                  <li>• Numérotation des étages</li>
+                  <li>• Personnalisation gratuite</li>
+                </ul>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-gray-500 line-through text-lg">280€</span>
+                    <span className="text-blue-600 font-bold text-2xl ml-2">238€</span>
+                  </div>
+                  <Link 
+                    to="/products/signaletique-interne"
+                    className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Découvrir
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bannière livraison gratuite */}
+          <div className="bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-xl p-8 text-center">
+            <h3 className="text-2xl font-bold mb-2">🚚 LIVRAISON GRATUITE</h3>
+            <p className="text-lg opacity-90 mb-4">
+              Pour toute commande supérieure à 300€ - Livraison sous 48h partout en France
+            </p>
+            <Link 
+              to="/products"
+              className="inline-block bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              Commencer mes achats
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

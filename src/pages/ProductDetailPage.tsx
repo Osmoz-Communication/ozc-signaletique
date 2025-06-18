@@ -88,7 +88,15 @@ const ProductDetailPage = () => {
           <div>
             <div className="mb-4">
               <span className="text-sm text-teal-600 font-medium">{product.category}</span>
-              <h1 className="text-3xl font-bold text-gray-900 mt-2">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mt-2 mb-3">{product.name}</h1>
+              {product.sku && (
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600">Référence :</span>
+                  <span className="text-sm font-mono bg-teal-50 text-teal-700 px-3 py-1 rounded-lg font-semibold">
+                    {product.sku}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center space-x-4 mb-6">
@@ -191,14 +199,96 @@ const ProductDetailPage = () => {
 
           <div className="p-6">
             {selectedTab === 'description' && (
-              <div>
-                <h3 className="font-semibold text-lg mb-4">Description détaillée</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {product.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                  Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad 
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-                  commodo consequat.
-                </p>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-lg mb-4">Description détaillée</h3>
+                  <div className="prose prose-gray max-w-none">
+                    <p className="text-gray-700 leading-relaxed mb-4">
+                      {product.description}
+                    </p>
+                    
+                    {/* Description détaillée basée sur la catégorie */}
+                    {product.category === 'signalisation-securite' && (
+                      <>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          Ce panneau de signalisation de sécurité est conçu pour répondre aux normes les plus strictes en matière de sécurité incendie et d'évacuation. Fabriqué avec des matériaux haute qualité, il garantit une visibilité optimale même dans des conditions de faible luminosité.
+                        </p>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          <strong>Caractéristiques principales :</strong>
+                        </p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                          <li>Matériau PVC rigide résistant aux UV et aux intempéries</li>
+                          <li>Pictogrammes conformes aux normes ISO 3864 et EN ISO 7010</li>
+                          <li>Couleurs vives et durables pour une visibilité maximale</li>
+                          <li>Installation facile par fixation murale ou suspension</li>
+                          <li>Résistant aux produits chimiques et aux variations de température</li>
+                        </ul>
+                      </>
+                    )}
+                    
+                    {product.category === 'signaletique-interne' && (
+                      <>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          Cette signalétique interne professionnelle apporte une solution élégante et efficace pour l'orientation et l'identification dans vos locaux. Conçue pour s'intégrer harmonieusement dans tous types d'environnements professionnels.
+                        </p>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          <strong>Avantages :</strong>
+                        </p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                          <li>Design moderne et professionnel</li>
+                          <li>Matériaux nobles : aluminium brossé, plexiglas, acier inoxydable</li>
+                          <li>Personnalisation possible selon vos besoins</li>
+                          <li>Installation rapide et discrète</li>
+                          <li>Entretien minimal grâce aux matériaux de qualité</li>
+                        </ul>
+                      </>
+                    )}
+                    
+                    {product.category === 'signaletique-externe' && (
+                      <>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          Cette signalétique externe est spécialement conçue pour résister aux conditions extérieures les plus difficiles tout en maintenant une excellente visibilité et un aspect professionnel durable dans le temps.
+                        </p>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          <strong>Résistance exceptionnelle :</strong>
+                        </p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                          <li>Protection UV intégrée contre la décoloration</li>
+                          <li>Résistance aux intempéries (pluie, neige, grêle)</li>
+                          <li>Matériaux anti-corrosion pour une longévité maximale</li>
+                          <li>Fixations renforcées pour résister aux vents forts</li>
+                          <li>Garantie 5 ans contre les défauts de fabrication</li>
+                        </ul>
+                      </>
+                    )}
+                    
+                    {product.category === 'accessibilite' && (
+                      <>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          Cette signalétique d'accessibilité respecte scrupuleusement les normes en vigueur pour l'accueil des personnes à mobilité réduite. Elle contribue à créer un environnement inclusif et accessible à tous.
+                        </p>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                          <strong>Conformité réglementaire :</strong>
+                        </p>
+                        <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                          <li>Conforme aux normes d'accessibilité PMR</li>
+                          <li>Contraste élevé pour les personnes malvoyantes</li>
+                          <li>Braille intégré pour les personnes non-voyantes</li>
+                          <li>Hauteur d'installation optimisée</li>
+                          <li>Pictogrammes universels reconnus</li>
+                        </ul>
+                      </>
+                    )}
+                    
+                    <div className="bg-teal-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-teal-800 mb-2">Installation et maintenance</h4>
+                      <p className="text-teal-700 text-sm">
+                        Nos produits sont livrés avec tous les éléments de fixation nécessaires et une notice d'installation détaillée. 
+                        Pour les installations complexes, notre équipe technique peut vous accompagner sur site.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -267,23 +357,111 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
+        {/* Upsell Section */}
+        <div className="bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl p-8 mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Complétez votre achat</h2>
+            <p className="text-gray-600">Ces produits sont souvent achetés ensemble</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            {/* Produit principal */}
+            <div className="bg-white rounded-lg p-6 shadow-sm border-2 border-teal-200">
+              <div className="text-center">
+                <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded-lg mx-auto mb-4" />
+                <h3 className="font-semibold text-sm mb-2">{product.name}</h3>
+                <p className="text-teal-600 font-bold">
+                  {product.priceTTC ? `${product.priceTTC.toFixed(2)}€` : `${product.price}€`}
+                </p>
+                <span className="text-xs text-gray-500 bg-teal-100 px-2 py-1 rounded-full mt-2 inline-block">
+                  Dans votre panier
+                </span>
+              </div>
+            </div>
+
+            {/* Plus */}
+            <div className="text-center">
+              <div className="w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center mx-auto font-bold">
+                +
+              </div>
+            </div>
+
+            {/* Produits complémentaires */}
+            <div className="space-y-4">
+              {relatedProducts.slice(0, 2).map((relatedProduct) => (
+                <div key={relatedProduct.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:border-teal-300 transition-colors">
+                  <div className="flex items-center space-x-4">
+                    <img src={relatedProduct.image} alt={relatedProduct.name} className="w-16 h-16 object-cover rounded-lg" />
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm mb-1">{relatedProduct.name}</h4>
+                      <p className="text-teal-600 font-bold text-sm">
+                        {relatedProduct.priceTTC ? `${relatedProduct.priceTTC.toFixed(2)}€` : `${relatedProduct.price}€`}
+                      </p>
+                    </div>
+                    <button className="bg-teal-600 text-white px-3 py-1 rounded text-xs hover:bg-teal-700 transition-colors">
+                      Ajouter
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bundle offer */}
+          <div className="mt-8 bg-white rounded-lg p-6 border-2 border-dashed border-teal-300">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-lg text-gray-900">Offre groupée</h3>
+                <p className="text-gray-600 text-sm">Achetez les 3 produits ensemble et économisez</p>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500 line-through text-sm">
+                  {(Number(product.priceTTC || product.price) + 
+                    relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0)).toFixed(2)}€
+                </div>
+                <div className="text-2xl font-bold text-teal-600">
+                  {((Number(product.priceTTC || product.price) + 
+                    relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0)) * 0.9).toFixed(2)}€
+                </div>
+                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">-10%</span>
+              </div>
+            </div>
+            <button className="w-full mt-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-teal-700 hover:to-blue-700 transition-all">
+              Ajouter le pack au panier
+            </button>
+          </div>
+        </div>
+
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-8">Produits similaires</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
-                <div key={relatedProduct.id} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <Link key={relatedProduct.id} to={`/product/${relatedProduct.id}`} className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all transform hover:-translate-y-1">
                   <img
                     src={relatedProduct.image}
                     alt={relatedProduct.name}
                     className="w-full h-48 object-cover"
                   />
                   <div className="p-4">
-                    <h3 className="font-semibold mb-2">{relatedProduct.name}</h3>
-                    <p className="text-teal-600 font-bold">{relatedProduct.price}€</p>
+                    <h3 className="font-semibold mb-2 line-clamp-2">{relatedProduct.name}</h3>
+                    <div className="flex items-center justify-between">
+                      <p className="text-teal-600 font-bold">
+                        {relatedProduct.priceTTC ? `${relatedProduct.priceTTC.toFixed(2)}€` : `${relatedProduct.price}€`}
+                      </p>
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart({ ...relatedProduct, quantity: 1 });
+                        }}
+                        className="bg-teal-600 text-white px-3 py-1 rounded text-sm hover:bg-teal-700 transition-colors"
+                      >
+                        Ajouter
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

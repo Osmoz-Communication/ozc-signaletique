@@ -40,29 +40,77 @@ const Header = () => {
       name: 'Signalisation de sécurité', 
       description: 'Panneaux de sécurité, incendie, danger et EPI',
       productCount: 17,
-      icon: '🚨'
+      icon: '🚨',
+      type: 'category'
     },
     { 
       id: 'signaletique-interne', 
       name: 'Signalétique interne', 
       description: 'Orientation, identification des locaux, information',
       productCount: 8,
-      icon: '🏢'
+      icon: '🏢',
+      type: 'category'
     },
     { 
       id: 'signaletique-externe', 
       name: 'Signalétique externe', 
       description: 'Enseignes, façades, parking et identification',
       productCount: 6,
-      icon: '🏪'
+      icon: '🏪',
+      type: 'category'
     },
     { 
       id: 'accessibilite', 
       name: 'Accessibilité', 
       description: 'PMR, handicap et signalisation tactile',
       productCount: 4,
-      icon: '♿'
+      icon: '♿',
+      type: 'category'
     }
+  ];
+
+  // Sous-catégories pour la recherche
+  const sampleSubcategories = [
+    // Signalisation de sécurité
+    { id: 'securite-incendie', name: 'Sécurité Incendie', parent: 'signalisation-securite', productCount: 5, type: 'subcategory' },
+    { id: 'panneaux-interdiction', name: 'Panneaux d\'interdiction', parent: 'signalisation-securite', productCount: 4, type: 'subcategory' },
+    { id: 'panneaux-danger', name: 'Panneaux de danger', parent: 'signalisation-securite', productCount: 4, type: 'subcategory' },
+    { id: 'epi-obligatoire', name: 'EPI Obligatoire', parent: 'signalisation-securite', productCount: 4, type: 'subcategory' },
+    
+    // Signalétique interne
+    { id: 'orientation-wayfinding', name: 'Orientation & Wayfinding', parent: 'signaletique-interne', productCount: 3, type: 'subcategory' },
+    { id: 'identification-locaux', name: 'Identification des locaux', parent: 'signaletique-interne', productCount: 3, type: 'subcategory' },
+    { id: 'information-generale', name: 'Information générale', parent: 'signaletique-interne', productCount: 2, type: 'subcategory' },
+    
+    // Signalétique externe
+    { id: 'enseignes-facades', name: 'Enseignes & Façades', parent: 'signaletique-externe', productCount: 2, type: 'subcategory' },
+    { id: 'parking-circulation', name: 'Parking & Circulation', parent: 'signaletique-externe', productCount: 2, type: 'subcategory' },
+    { id: 'identification', name: 'Identification', parent: 'signaletique-externe', productCount: 2, type: 'subcategory' },
+    
+    // Accessibilité
+    { id: 'pmr-handicap', name: 'PMR & Handicap', parent: 'accessibilite', productCount: 2, type: 'subcategory' },
+    { id: 'signalisation-tactile', name: 'Signalisation tactile', parent: 'accessibilite', productCount: 2, type: 'subcategory' }
+  ];
+
+  // Sous-sous-catégories pour la recherche
+  const sampleSubSubcategories = [
+    // Sécurité Incendie
+    { id: 'extincteurs', name: 'Extincteurs', parent: 'securite-incendie', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'sorties-secours', name: 'Sorties de secours', parent: 'securite-incendie', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'points-rassemblement', name: 'Points de rassemblement', parent: 'securite-incendie', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'alarmes-incendie', name: 'Alarmes incendie', parent: 'securite-incendie', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    
+    // Panneaux d'interdiction
+    { id: 'interdiction-fumer', name: 'Interdiction de fumer', parent: 'panneaux-interdiction', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'acces-interdit', name: 'Accès interdit', parent: 'panneaux-interdiction', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'interdiction-telephoner', name: 'Interdiction de téléphoner', parent: 'panneaux-interdiction', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'defense-entrer', name: 'Défense d\'entrer', parent: 'panneaux-interdiction', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    
+    // EPI Obligatoire
+    { id: 'casques', name: 'Casques', parent: 'epi-obligatoire', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'lunettes', name: 'Lunettes', parent: 'epi-obligatoire', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'gants', name: 'Gants', parent: 'epi-obligatoire', grandParent: 'signalisation-securite', type: 'subsubcategory' },
+    { id: 'chaussures-securite', name: 'Chaussures de sécurité', parent: 'epi-obligatoire', grandParent: 'signalisation-securite', type: 'subsubcategory' }
   ];
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,22 +118,47 @@ const Header = () => {
     setSearchQuery(query);
     
     if (query.trim().length > 1) {
-      // Recherche dans les catégories
+      const queryLower = query.toLowerCase();
+      
+      // Recherche dans les catégories principales
       const filteredCategories = sampleCategories.filter(category =>
-        category.name.toLowerCase().includes(query.toLowerCase()) ||
-        category.description.toLowerCase().includes(query.toLowerCase())
+        category.name.toLowerCase().includes(queryLower) ||
+        category.description.toLowerCase().includes(queryLower)
       ).slice(0, 2);
 
-      // Recherche dans les produits
+      // Recherche dans les sous-catégories
+      const filteredSubcategories = sampleSubcategories.filter(subcategory =>
+        subcategory.name.toLowerCase().includes(queryLower)
+      ).slice(0, 3);
+
+      // Recherche dans les sous-sous-catégories
+      const filteredSubSubcategories = sampleSubSubcategories.filter(subsubcategory =>
+        subsubcategory.name.toLowerCase().includes(queryLower)
+      ).slice(0, 3);
+
+      // Recherche dans les produits (nom, catégorie, UGS, attributs)
       const filteredProducts = sampleProducts.filter(product =>
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase())
+        product.name.toLowerCase().includes(queryLower) ||
+        product.category.toLowerCase().includes(queryLower) ||
+        product.sku.toLowerCase().includes(queryLower) ||
+        // Recherche exacte par UGS (sans tirets)
+        product.sku.toLowerCase().replace(/-/g, '').includes(queryLower.replace(/-/g, '')) ||
+        // Recherche dans les attributs/matériaux
+        ['pvc', 'aluminium', 'inox', 'laiton', 'adhésif', 'plexiglas'].some(material => 
+          material.includes(queryLower) && product.name.toLowerCase().includes(material)
+        ) ||
+        // Recherche dans les dimensions
+        ['a4', 'a3', 'a1', 'petit', 'moyen', 'grand'].some(size => 
+          size.includes(queryLower) && product.name.toLowerCase().includes(size)
+        )
       ).slice(0, 4);
 
-      // Combiner les résultats avec un type pour les différencier
+      // Combiner tous les résultats
       const combined = [
-        ...filteredCategories.map(cat => ({ ...cat, type: 'category' })),
-        ...filteredProducts.map(prod => ({ ...prod, type: 'product' }))
+        ...filteredCategories,
+        ...filteredSubcategories,
+        ...filteredSubSubcategories,
+        ...filteredProducts
       ];
 
       setSearchResults(combined);
@@ -100,10 +173,21 @@ const Header = () => {
     setShowSearchResults(false);
     setSearchQuery('');
     
-    if (result.type === 'category') {
-      navigate(`/products/${result.id}`);
-    } else {
-      navigate(`/product/${result.id}`);
+    switch (result.type) {
+      case 'category':
+        navigate(`/products/${result.id}`);
+        break;
+      case 'subcategory':
+        navigate(`/products/${result.parent}/${result.id}`);
+        break;
+      case 'subsubcategory':
+        navigate(`/products/${result.grandParent}/${result.parent}/${result.id}`);
+        break;
+      case 'product':
+        navigate(`/product/${result.id}`);
+        break;
+      default:
+        navigate(`/product/${result.id}`);
     }
   };
 
@@ -209,7 +293,7 @@ const Header = () => {
   const simpleCategories = [
     { name: 'Identification', href: '/products/identification' },
     { name: 'Gravure', href: '/products/gravure' },
-    { name: 'Sur-mesure', href: '/products/sur-mesure' },
+                    { name: 'Sur-mesure', href: '/custom' },
   ];
 
   return (
@@ -272,12 +356,16 @@ const Header = () => {
                   <div className="text-xs text-gray-500 px-3 py-2 border-b">
                     {(() => {
                       const categories = searchResults.filter(r => r.type === 'category').length;
+                      const subcategories = searchResults.filter(r => r.type === 'subcategory').length;
+                      const subsubcategories = searchResults.filter(r => r.type === 'subsubcategory').length;
                       const products = searchResults.filter(r => r.type === 'product').length;
                       
-                      if (categories > 0 && products > 0) {
-                        return `${categories} catégorie${categories > 1 ? 's' : ''} et ${products} produit${products > 1 ? 's' : ''} trouvé${products > 1 ? 's' : ''}`;
-                      } else if (categories > 0) {
-                        return `${categories} catégorie${categories > 1 ? 's' : ''} trouvée${categories > 1 ? 's' : ''}`;
+                      const totalCategories = categories + subcategories + subsubcategories;
+                      
+                      if (totalCategories > 0 && products > 0) {
+                        return `${totalCategories} catégorie${totalCategories > 1 ? 's' : ''} et ${products} produit${products > 1 ? 's' : ''} trouvé${products > 1 ? 's' : ''}`;
+                      } else if (totalCategories > 0) {
+                        return `${totalCategories} catégorie${totalCategories > 1 ? 's' : ''} trouvée${totalCategories > 1 ? 's' : ''}`;
                       } else {
                         return `${products} produit${products > 1 ? 's' : ''} trouvé${products > 1 ? 's' : ''}`;
                       }
@@ -285,11 +373,12 @@ const Header = () => {
                   </div>
 
                   {/* Catégories */}
-                  {searchResults.filter(r => r.type === 'category').length > 0 && (
+                  {(searchResults.filter(r => r.type === 'category' || r.type === 'subcategory' || r.type === 'subsubcategory').length > 0) && (
                     <div className="mb-2">
                       <div className="text-xs font-medium text-gray-700 px-3 py-2 bg-gray-50 rounded">
                         CATÉGORIES
                       </div>
+                      {/* Catégories principales */}
                       {searchResults.filter(r => r.type === 'category').map((category) => (
                         <button
                           key={category.id}
@@ -314,24 +403,67 @@ const Header = () => {
                           </div>
                         </button>
                       ))}
+                      
+                      {/* Sous-catégories */}
+                      {searchResults.filter(r => r.type === 'subcategory').map((subcategory) => (
+                        <button
+                          key={subcategory.id}
+                          onClick={() => handleResultClick(subcategory)}
+                          className="w-full flex items-center space-x-3 p-3 hover:bg-indigo-50 transition-colors text-left border-l-4 border-transparent hover:border-indigo-400"
+                        >
+                          <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                            <div className="text-indigo-600 font-semibold text-sm">SUB</div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-gray-900 truncate">
+                              {subcategory.name}
+                            </p>
+                            <p className="text-sm text-gray-600 truncate">
+                              Sous-catégorie de {sampleCategories.find(c => c.id === subcategory.parent)?.name}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium text-indigo-600">
+                              {subcategory.productCount} produits
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                      
+                      {/* Sous-sous-catégories */}
+                      {searchResults.filter(r => r.type === 'subsubcategory').map((subsubcategory) => (
+                        <button
+                          key={subsubcategory.id}
+                          onClick={() => handleResultClick(subsubcategory)}
+                          className="w-full flex items-center space-x-3 p-3 hover:bg-purple-50 transition-colors text-left border-l-4 border-transparent hover:border-purple-400"
+                        >
+                          <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <div className="text-purple-600 font-semibold text-xs">SUB2</div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-gray-900 truncate">
+                              {subsubcategory.name}
+                            </p>
+                            <p className="text-sm text-gray-600 truncate">
+                              {sampleSubcategories.find(s => s.id === subsubcategory.parent)?.name} • {sampleCategories.find(c => c.id === subsubcategory.grandParent)?.name}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-purple-600 font-medium">
+                              Spécialité
+                            </div>
+                          </div>
+                        </button>
+                      ))}
                     </div>
                   )}
 
                   {/* Produits */}
                   {searchResults.filter(r => r.type === 'product').length > 0 && (
                     <div>
-                      {searchResults.filter(r => r.type === 'category').length > 0 && (
-                        <div className="text-xs font-medium text-gray-700 px-3 py-2 bg-gray-50 rounded flex justify-between items-center">
-                          <span>PRODUITS</span>
-                          <span className="text-teal-600 font-medium">
-                            {(() => {
-                              const products = searchResults.filter(r => r.type === 'product');
-                              const prices = products.map(p => p.priceHT);
-                              const min = Math.min(...prices);
-                              const max = Math.max(...prices);
-                              return min === max ? `${min}€ HT` : `${min}€ - ${max}€ HT`;
-                            })()}
-                          </span>
+                      {(searchResults.filter(r => r.type === 'category' || r.type === 'subcategory' || r.type === 'subsubcategory').length > 0) && (
+                        <div className="text-xs font-medium text-gray-700 px-3 py-2 bg-gray-50 rounded">
+                          PRODUITS
                         </div>
                       )}
                       {searchResults.filter(r => r.type === 'product').map((product) => (
@@ -554,14 +686,25 @@ const Header = () => {
                   </Link>
                   <div className="ml-4 space-y-1">
                     {category.subcategories.map((subcategory, index) => (
-                      <Link
-                        key={index}
-                        to={subcategory.href}
-                        className="block py-1 text-sm text-gray-400 hover:text-gray-300 transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        {subcategory.name}
-                      </Link>
+                      <div key={index}>
+                        <Link
+                          to={subcategory.href}
+                          className="block py-1 text-sm text-gray-400 hover:text-gray-300 transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {subcategory.name}
+                        </Link>
+                        <div className="ml-4 space-y-1">
+                          {subcategory.items.map((item, itemIndex) => (
+                            <div
+                              key={itemIndex}
+                              className="block py-1 text-xs text-gray-500"
+                            >
+                              • {item}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>

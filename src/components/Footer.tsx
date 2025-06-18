@@ -56,7 +56,7 @@ const Footer = () => {
               <li><Link to="/contact" className="text-gray-300 hover:text-teal-400 transition-colors">Contactez-nous</Link></li>
               <li><Link to="/account/orders" className="text-gray-300 hover:text-teal-400 transition-colors">Suivre ma commande</Link></li>
               <li><Link to="/returns" className="text-gray-300 hover:text-teal-400 transition-colors">Retours & échanges</Link></li>
-              <li><Link to="/help" className="text-gray-300 hover:text-teal-400 transition-colors">Centre d'aide</Link></li>
+              <li><Link to="/faq" className="text-gray-300 hover:text-teal-400 transition-colors">Centre d'aide</Link></li>
               <li><Link to="/shipping" className="text-gray-300 hover:text-teal-400 transition-colors">Livraison</Link></li>
             </ul>
           </div>
@@ -67,17 +67,17 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone size={16} className="text-teal-400" />
-                <span className="text-gray-300">01 23 45 67 89</span>
+                <span className="text-gray-300">01.84.19.01.04</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={16} className="text-teal-400" />
-                <span className="text-gray-300">contact@ozc-signaletique.fr</span>
+                <span className="text-gray-300">info@ozc-signaletique.fr</span>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin size={16} className="text-teal-400 mt-1" />
                 <span className="text-gray-300">
-                  123 Rue de l'Industrie<br />
-                  75001 Paris, France
+                  36 rue Bertrand Flornoy<br />
+                  77120 Coulommiers, France
                 </span>
               </div>
             </div>
@@ -89,15 +89,18 @@ const Footer = () => {
             <p className="text-gray-400 text-sm">
               © 2024 OZC Signalétique. Tous droits réservés.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
-                Politique de confidentialité
+            <div className="flex flex-wrap justify-center md:justify-end space-x-6 mt-4 md:mt-0">
+              <Link to="/legal" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
+                Mentions légales
               </Link>
               <Link to="/terms" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
-                Conditions générales
+                CGV
               </Link>
-              <Link to="/cookies" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
-                Cookies
+              <Link to="/privacy" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
+                Confidentialité
+              </Link>
+              <Link to="/faq" className="text-gray-400 hover:text-teal-400 text-sm transition-colors">
+                FAQ
               </Link>
             </div>
           </div>

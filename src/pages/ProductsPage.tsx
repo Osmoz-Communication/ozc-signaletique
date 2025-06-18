@@ -20,28 +20,52 @@ const ProductsPage = () => {
           slug: 'securite-incendie',
           description: 'Panneaux et équipements de sécurité incendie',
           image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 5
+          productCount: 5,
+          subSubcategories: [
+            { name: 'Extincteurs', slug: 'extincteurs', productCount: 2 },
+            { name: 'Sorties de secours', slug: 'sorties-secours', productCount: 1 },
+            { name: 'Points de rassemblement', slug: 'points-rassemblement', productCount: 1 },
+            { name: 'Alarmes incendie', slug: 'alarmes-incendie', productCount: 1 }
+          ]
         },
         {
           name: 'Panneaux d\'interdiction',
           slug: 'panneaux-interdiction',
           description: 'Signalisation d\'interdiction et de restriction',
           image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 4
+          productCount: 4,
+          subSubcategories: [
+            { name: 'Interdiction de fumer', slug: 'interdiction-fumer', productCount: 1 },
+            { name: 'Accès interdit', slug: 'acces-interdit', productCount: 1 },
+            { name: 'Interdiction de téléphoner', slug: 'interdiction-telephoner', productCount: 1 },
+            { name: 'Défense d\'entrer', slug: 'defense-entrer', productCount: 1 }
+          ]
         },
         {
           name: 'Panneaux de danger',
           slug: 'panneaux-danger',
           description: 'Avertissements et signalisation de dangers',
           image: 'https://images.pexels.com/photos/4919731/pexels-photo-4919731.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 4
+          productCount: 4,
+          subSubcategories: [
+            { name: 'Danger électrique', slug: 'danger-electrique', productCount: 1 },
+            { name: 'Matières toxiques', slug: 'matieres-toxiques', productCount: 1 },
+            { name: 'Rayonnements', slug: 'rayonnements', productCount: 1 },
+            { name: 'Chute d\'objets', slug: 'chute-objets', productCount: 1 }
+          ]
         },
         {
           name: 'EPI Obligatoire',
           slug: 'epi-obligatoire',
           description: 'Signalisation d\'équipements de protection individuelle',
           image: 'https://images.pexels.com/photos/4425961/pexels-photo-4425961.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 4
+          productCount: 4,
+          subSubcategories: [
+            { name: 'Casques', slug: 'casques', productCount: 1 },
+            { name: 'Lunettes', slug: 'lunettes', productCount: 1 },
+            { name: 'Gants', slug: 'gants', productCount: 1 },
+            { name: 'Chaussures de sécurité', slug: 'chaussures-securite', productCount: 1 }
+          ]
         }
       ]
     },
@@ -54,21 +78,39 @@ const ProductsPage = () => {
           slug: 'orientation-wayfinding',
           description: 'Fléchage et orientation dans les bâtiments',
           image: 'https://images.pexels.com/photos/4792503/pexels-photo-4792503.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 3
+          productCount: 3,
+          subSubcategories: [
+            { name: 'Fléchage directionnel', slug: 'flechage-directionnel', productCount: 1 },
+            { name: 'Plans de bâtiment', slug: 'plans-batiment', productCount: 1 },
+            { name: 'Numérotation', slug: 'numerotation', productCount: 1 },
+            { name: 'Signalétique étages', slug: 'signaletique-etages', productCount: 0 }
+          ]
         },
         {
           name: 'Identification des locaux',
           slug: 'identification-locaux',
           description: 'Plaques et panneaux d\'identification',
           image: 'https://images.pexels.com/photos/4167541/pexels-photo-4167541.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 4
+          productCount: 4,
+          subSubcategories: [
+            { name: 'Plaques de porte', slug: 'plaques-porte', productCount: 1 },
+            { name: 'Pictogrammes WC', slug: 'pictogrammes-wc', productCount: 2 },
+            { name: 'Salles de réunion', slug: 'salles-reunion', productCount: 1 },
+            { name: 'Bureaux', slug: 'bureaux', productCount: 0 }
+          ]
         },
         {
           name: 'Information générale',
           slug: 'information-generale',
           description: 'Panneaux d\'information et d\'affichage',
           image: 'https://images.pexels.com/photos/4425961/pexels-photo-4425961.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Panneaux d\'affichage', slug: 'panneaux-affichage', productCount: 1 },
+            { name: 'Consignes', slug: 'consignes', productCount: 1 },
+            { name: 'Horaires', slug: 'horaires', productCount: 0 },
+            { name: 'Contact', slug: 'contact', productCount: 0 }
+          ]
         }
       ]
     },
@@ -81,21 +123,39 @@ const ProductsPage = () => {
           slug: 'enseignes-facades',
           description: 'Enseignes et signalétique de façade',
           image: 'https://images.pexels.com/photos/4792503/pexels-photo-4792503.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Enseignes lumineuses', slug: 'enseignes-lumineuses', productCount: 1 },
+            { name: 'Lettres découpées', slug: 'lettres-decoupees', productCount: 1 },
+            { name: 'Totems', slug: 'totems', productCount: 0 },
+            { name: 'Banderoles', slug: 'banderoles', productCount: 0 }
+          ]
         },
         {
           name: 'Parking & Circulation',
           slug: 'parking-circulation',
           description: 'Signalisation de parking et circulation',
           image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Marquage au sol', slug: 'marquage-sol', productCount: 1 },
+            { name: 'Panneaux de parking', slug: 'panneaux-parking', productCount: 1 },
+            { name: 'Bornes', slug: 'bornes', productCount: 0 },
+            { name: 'Barrières', slug: 'barrieres', productCount: 0 }
+          ]
         },
         {
           name: 'Identification',
           slug: 'identification',
           description: 'Plaques et signalétique d\'identification',
           image: 'https://images.pexels.com/photos/4425961/pexels-photo-4425961.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Plaques professionnelles', slug: 'plaques-professionnelles', productCount: 1 },
+            { name: 'Numéros de rue', slug: 'numeros-rue', productCount: 1 },
+            { name: 'Signalétique d\'entreprise', slug: 'signaletique-entreprise', productCount: 0 },
+            { name: 'Identification véhicules', slug: 'identification-vehicules', productCount: 0 }
+          ]
         }
       ]
     },
@@ -108,20 +168,35 @@ const ProductsPage = () => {
           slug: 'pmr-handicap',
           description: 'Signalétique pour personnes à mobilité réduite',
           image: 'https://images.pexels.com/photos/4167541/pexels-photo-4167541.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Pictogrammes PMR', slug: 'pictogrammes-pmr', productCount: 1 },
+            { name: 'Braille', slug: 'braille', productCount: 0 },
+            { name: 'Bandes podotactiles', slug: 'bandes-podotactiles', productCount: 0 },
+            { name: 'Rampes d\'accès', slug: 'rampes-acces', productCount: 0 }
+          ]
         },
         {
           name: 'Signalisation tactile',
           slug: 'signalisation-tactile',
           description: 'Signalétique tactile et pour malvoyants',
           image: 'https://images.pexels.com/photos/4425961/pexels-photo-4425961.jpeg?auto=compress&cs=tinysrgb&w=400',
-          productCount: 2
+          productCount: 2,
+          subSubcategories: [
+            { name: 'Plaques braille', slug: 'plaques-braille', productCount: 1 },
+            { name: 'Main courante tactile', slug: 'main-courante-tactile', productCount: 0 },
+            { name: 'Contrastes', slug: 'contrastes', productCount: 0 },
+            { name: 'Relief', slug: 'relief', productCount: 1 }
+          ]
         }
       ]
     }
   };
 
   const currentCategory = category ? categoryData[category as keyof typeof categoryData] : null;
+  const currentSubcategory = currentCategory && subcategory 
+    ? currentCategory.subcategories.find(sub => sub.slug === subcategory)
+    : null;
   
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
@@ -387,10 +462,53 @@ const ProductsPage = () => {
           </div>
         )}
 
+        {/* Sous-sous-catégories */}
+        {currentSubcategory && currentSubcategory.subSubcategories && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Explorez nos spécialités</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {currentSubcategory.subSubcategories.map((subSubcategory, index) => (
+                <div
+                  key={index}
+                  className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-teal-200"
+                >
+                  <div className="p-6">
+                    <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl mb-4 flex items-center justify-center">
+                      <span className="text-white font-bold text-xl">
+                        {subSubcategory.name.charAt(0)}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-lg mb-2 group-hover:text-teal-600 transition-colors">
+                      {subSubcategory.name}
+                    </h3>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-teal-600 font-semibold">
+                        {subSubcategory.productCount} produit{subSubcategory.productCount > 1 ? 's' : ''}
+                      </span>
+                      {subSubcategory.productCount > 0 && (
+                        <div className="flex items-center text-teal-600 group-hover:text-teal-700 transition-colors">
+                          <span className="text-sm font-medium mr-1">Voir</span>
+                          <ChevronRight size={16} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          {showFilters && (
-            <div className="lg:w-80 bg-white rounded-lg shadow-sm p-6">
+          <div className={`transition-all duration-300 ease-in-out ${
+            showFilters 
+              ? 'lg:w-80 opacity-100 translate-x-0' 
+              : 'lg:w-0 opacity-0 -translate-x-full lg:translate-x-0'
+          } ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <div className={`bg-white rounded-lg shadow-sm p-6 transition-all duration-300 ${
+              showFilters ? 'scale-100' : 'scale-95 lg:scale-100'
+            }`}>
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-semibold text-lg">Filtres</h3>
                 <button
@@ -400,7 +518,7 @@ const ProductsPage = () => {
                     setSelectedSizes([]);
                     setPriceRange([0, 500]);
                   }}
-                  className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                  className="text-sm text-teal-600 hover:text-teal-700 font-medium transition-colors"
                 >
                   Réinitialiser
                 </button>
@@ -622,10 +740,12 @@ const ProductsPage = () => {
                 </div>
               )}
             </div>
-          )}
+          </div>
 
           {/* Products Grid */}
-          <div className="flex-1">
+          <div className={`flex-1 transition-all duration-300 ${
+            showFilters ? 'lg:ml-0' : 'lg:ml-0'
+          }`}>
             {filteredProducts.length > 0 && (
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Découvrez nos produits</h2>
@@ -638,9 +758,15 @@ const ProductsPage = () => {
             )}
             
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className={`grid gap-8 transition-all duration-300 ${
+                showFilters 
+                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' 
+                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+              }`}>
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <div key={product.id} className="transform transition-all duration-300 hover:scale-105">
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             ) : (

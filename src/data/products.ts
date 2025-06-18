@@ -83,6 +83,7 @@ export const products: Product[] = [
     price: 15.90,
     priceHT: 13.25,
     priceTTC: 15.90,
+    sku: 'INT-ACC-007',
     category: 'signalisation-securite',
     subcategory: 'panneaux-interdiction',
     image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400'
@@ -118,6 +119,7 @@ export const products: Product[] = [
     price: 18.75,
     priceHT: 15.63,
     priceTTC: 18.75,
+    sku: 'DAN-ELE-010',
     category: 'signalisation-securite',
     subcategory: 'panneaux-danger',
     image: 'https://images.pexels.com/photos/4919731/pexels-photo-4919731.jpeg?auto=compress&cs=tinysrgb&w=400'

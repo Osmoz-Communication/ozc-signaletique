@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingCart, Check, Star } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 import { Product } from '../types';
 
 interface ProductCardProps {
@@ -10,6 +11,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
@@ -17,6 +19,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({ ...product, quantity: 1 });
+    
+    // Toast notification
+    showToast(`${product.name} ajouté au panier !`, 'success');
     
     // Animation de feedback
     setIsAddedToCart(true);
@@ -27,6 +32,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     setIsWishlisted(!isWishlisted);
+    
+    // Toast notification
+    if (!isWishlisted) {
+      showToast(`${product.name} ajouté aux favoris !`, 'success');
+    } else {
+      showToast(`${product.name} retiré des favoris`, 'info');
+    }
   };
 
   return (
@@ -68,11 +80,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </Link>
       
       <div className="p-6">
-        <div className="mb-3">
-          <span className="text-xs text-teal-600 font-bold uppercase tracking-wider">
-            {product.category}
-          </span>
-        </div>
         
         <Link to={`/product/${product.id}`}>
           <h3 className="font-bold text-lg mb-3 group-hover:text-teal-600 transition-colors line-clamp-2 leading-tight">

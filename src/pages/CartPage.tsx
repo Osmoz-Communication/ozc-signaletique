@@ -1,10 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Minus, Plus, X, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, X, ShoppingBag, Star, TrendingUp } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { products } from '../data/products';
 
 const CartPage = () => {
-  const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, getCartTotal, addToCart } = useCart();
+
+  // Produits recommandés basés sur le contenu du panier
+  const getRecommendedProducts = () => {
+    const cartCategories = [...new Set(cartItems.map(item => item.category))];
+    const cartProductIds = cartItems.map(item => item.id);
+    
+    return products.filter(product => 
+      cartCategories.includes(product.category) && 
+      !cartProductIds.includes(product.id)
+    ).slice(0, 4);
+  };
+
+  const recommendedProducts = getRecommendedProducts();
 
   if (cartItems.length === 0) {
     return (
@@ -136,6 +150,110 @@ const CartPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Upsell Section */}
+        {recommendedProducts.length > 0 && (
+          <div className="mt-12">
+            <div className="bg-white rounded-lg shadow-sm p-8">
+              <div className="flex items-center mb-6">
+                <TrendingUp className="text-teal-600 mr-3" size={24} />
+                <h2 className="text-2xl font-bold text-gray-900">Produits recommandés pour vous</h2>
+              </div>
+              <p className="text-gray-600 mb-8">Basé sur les articles de votre panier, ces produits pourraient vous intéresser</p>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {recommendedProducts.map((product) => (
+                  <div key={product.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                    <Link to={`/product/${product.id}`}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-32 object-cover rounded-lg mb-3"
+                      />
+                    </Link>
+                    <h3 className="font-semibold text-sm mb-2 line-clamp-2">{product.name}</h3>
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3 h-3 ${i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                        />
+                      ))}
+                      <span className="text-xs text-gray-500 ml-1">(4.2)</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-teal-600 font-bold text-sm">
+                        {product.priceTTC ? `${product.priceTTC.toFixed(2)}€` : `${product.price}€`}
+                      </p>
+                      <button
+                        onClick={() => addToCart({ ...product, quantity: 1 })}
+                        className="bg-teal-600 text-white px-3 py-1 rounded text-xs hover:bg-teal-700 transition-colors"
+                      >
+                        Ajouter
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Free Shipping Upsell */}
+        {getCartTotal() < 300 && getCartTotal() > 200 && (
+          <div className="mt-8">
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-lg text-yellow-800 mb-2">
+                    🚚 Plus que {(300 - getCartTotal()).toFixed(2)}€ pour la livraison gratuite !
+                  </h3>
+                  <p className="text-yellow-700">
+                    Ajoutez un produit de cette sélection pour bénéficier de la livraison gratuite
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-yellow-800">
+                    -{(300 - getCartTotal()).toFixed(2)}€
+                  </div>
+                  <div className="text-sm text-yellow-600">pour 15€ d'économie</div>
+                </div>
+              </div>
+              
+              {/* Produits pour atteindre la livraison gratuite */}
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {products
+                  .filter(p => {
+                    const price = p.priceTTC || p.price;
+                    const remaining = 300 - getCartTotal();
+                    return price <= remaining + 50 && price >= remaining - 20 && !cartItems.find(item => item.id === p.id);
+                  })
+                  .slice(0, 3)
+                  .map((product) => (
+                    <div key={product.id} className="bg-white rounded-lg p-4 border border-yellow-200">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-24 object-cover rounded-lg mb-2"
+                      />
+                      <h4 className="font-medium text-sm mb-1 line-clamp-1">{product.name}</h4>
+                      <div className="flex items-center justify-between">
+                        <span className="text-yellow-700 font-bold text-sm">
+                          {product.priceTTC ? `${product.priceTTC.toFixed(2)}€` : `${product.price}€`}
+                        </span>
+                        <button
+                          onClick={() => addToCart({ ...product, quantity: 1 })}
+                          className="bg-yellow-600 text-white px-2 py-1 rounded text-xs hover:bg-yellow-700 transition-colors"
+                        >
+                          Ajouter
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
