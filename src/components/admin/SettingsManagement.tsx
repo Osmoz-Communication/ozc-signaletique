@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Globe, Mail, Shield, Bell, Palette, Database, LogOut } from 'lucide-react';
+import { FaSave, FaGlobe, FaEnvelope, FaShieldAlt, FaBell, FaPalette, FaUpload, FaEye, FaSignOutAlt } from 'react-icons/fa';
 
 const SettingsManagement = () => {
   const [settings, setSettings] = useState({
@@ -25,16 +25,13 @@ const SettingsManagement = () => {
     sessionTimeout: 30,
     maxLoginAttempts: 5,
     requireStrongPassword: true,
+    twoFactorAuth: false,
     
     // Paramètres d'apparence
     primaryColor: '#0d9488',
     secondaryColor: '#06b6d4',
-    logoUrl: '',
-    
-    // Paramètres de sauvegarde
-    autoBackup: true,
-    backupFrequency: 'daily',
-    retentionPeriod: 30
+    logoUrl: '/src/assets/logo.png',
+    faviconUrl: '/src/assets/favicon.ico'
   });
 
   const [activeTab, setActiveTab] = useState('general');
@@ -49,18 +46,29 @@ const SettingsManagement = () => {
     }, 1000);
   };
 
+  const handleFileUpload = (type: 'logo' | 'favicon', event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      if (type === 'logo') {
+        setSettings({...settings, logoUrl: url});
+      } else {
+        setSettings({...settings, faviconUrl: url});
+      }
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminAuth');
     window.location.href = '/admin/login';
   };
 
   const tabs = [
-    { id: 'general', label: 'Général', icon: Globe },
-    { id: 'shipping', label: 'Livraison', icon: Mail },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'security', label: 'Sécurité', icon: Shield },
-    { id: 'appearance', label: 'Apparence', icon: Palette },
-    { id: 'backup', label: 'Sauvegarde', icon: Database }
+    { id: 'general', label: 'Général', icon: FaGlobe },
+    { id: 'shipping', label: 'Livraison', icon: FaEnvelope },
+    { id: 'notifications', label: 'Notifications', icon: FaBell },
+    { id: 'security', label: 'Sécurité', icon: FaShieldAlt },
+    { id: 'appearance', label: 'Apparence', icon: FaPalette }
   ];
 
   return (
@@ -76,7 +84,7 @@ const SettingsManagement = () => {
             onClick={handleLogout}
             className="flex items-center space-x-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
           >
-            <LogOut size={16} />
+            <FaSignOutAlt size={16} />
             <span>Déconnexion</span>
           </button>
           <button
@@ -88,7 +96,7 @@ const SettingsManagement = () => {
                 : 'bg-teal-600 text-white hover:bg-teal-700'
             }`}
           >
-            <Save size={16} />
+            <FaSave size={16} />
             <span>{isSaving ? 'Sauvegarde...' : 'Sauvegarder'}</span>
           </button>
         </div>
@@ -295,112 +303,235 @@ const SettingsManagement = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <span className="font-medium text-gray-900">Mot de passe fort requis</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.requireStrongPassword}
-                      onChange={(e) => setSettings({...settings, requireStrongPassword: e.target.checked})}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                  </label>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <span className="font-medium text-gray-900">Mot de passe fort requis</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={settings.requireStrongPassword}
+                        onChange={(e) => setSettings({...settings, requireStrongPassword: e.target.checked})}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                    <div>
+                      <span className="font-medium text-gray-900">Authentification à deux facteurs (2FA)</span>
+                      <p className="text-sm text-gray-500 mt-1">Sécurisez votre compte avec Google Authenticator</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={settings.twoFactorAuth}
+                        onChange={(e) => setSettings({...settings, twoFactorAuth: e.target.checked})}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                    </label>
+                  </div>
+
+                  {settings.twoFactorAuth && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-medium text-blue-900 mb-2">Configuration Google Authenticator</h4>
+                      <div className="space-y-3">
+                        <p className="text-sm text-blue-800">
+                          1. Téléchargez Google Authenticator sur votre smartphone
+                        </p>
+                        <p className="text-sm text-blue-800">
+                          2. Scannez le QR code ci-dessous ou entrez la clé manuellement
+                        </p>
+                        <div className="flex items-center space-x-4 mt-4">
+                          <div className="w-32 h-32 bg-white border-2 border-blue-300 rounded-lg flex items-center justify-center">
+                            <div className="text-center text-xs text-gray-500">
+                              QR Code<br/>Google Auth
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <label className="block text-sm font-medium text-blue-900 mb-1">
+                              Clé secrète manuelle :
+                            </label>
+                            <code className="block text-sm bg-white border border-blue-200 rounded px-3 py-2 text-blue-800 font-mono">
+                              JBSWY3DPEHPK3PXP
+                            </code>
+                            <p className="text-xs text-blue-600 mt-1">
+                              Sauvegardez cette clé dans un endroit sûr
+                            </p>
+                          </div>
+                        </div>
+                        <div className="pt-3 border-t border-blue-200">
+                          <label className="block text-sm font-medium text-blue-900 mb-2">
+                            Code de vérification (6 chiffres) :
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="123456"
+                            maxLength={6}
+                            className="w-32 px-3 py-2 border border-blue-300 rounded-lg text-center font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                          <button className="ml-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Vérifier
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
             {/* Paramètres d'apparence */}
             {activeTab === 'appearance' && (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 <h2 className="text-xl font-semibold text-gray-900">Paramètres d'apparence</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Couleur primaire
-                    </label>
-                    <input
-                      type="color"
-                      value={settings.primaryColor}
-                      onChange={(e) => setSettings({...settings, primaryColor: e.target.value})}
-                      className="w-full h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Couleur secondaire
-                    </label>
-                    <input
-                      type="color"
-                      value={settings.secondaryColor}
-                      onChange={(e) => setSettings({...settings, secondaryColor: e.target.value})}
-                      className="w-full h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    />
+                {/* Couleurs */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Couleurs du thème</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Couleur principale
+                      </label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="color"
+                          value={settings.primaryColor}
+                          onChange={(e) => setSettings({...settings, primaryColor: e.target.value})}
+                          className="w-12 h-12 border border-gray-300 rounded-lg cursor-pointer"
+                        />
+                        <input
+                          type="text"
+                          value={settings.primaryColor}
+                          onChange={(e) => setSettings({...settings, primaryColor: e.target.value})}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Couleur secondaire
+                      </label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="color"
+                          value={settings.secondaryColor}
+                          onChange={(e) => setSettings({...settings, secondaryColor: e.target.value})}
+                          className="w-12 h-12 border border-gray-300 rounded-lg cursor-pointer"
+                        />
+                        <input
+                          type="text"
+                          value={settings.secondaryColor}
+                          onChange={(e) => setSettings({...settings, secondaryColor: e.target.value})}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    URL du logo
-                  </label>
-                  <input
-                    type="url"
-                    value={settings.logoUrl}
-                    onChange={(e) => setSettings({...settings, logoUrl: e.target.value})}
-                    placeholder="https://exemple.com/logo.png"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
-                </div>
-              </div>
-            )}
 
-            {/* Paramètres de sauvegarde */}
-            {activeTab === 'backup' && (
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold text-gray-900">Paramètres de sauvegarde</h2>
-                
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <span className="font-medium text-gray-900">Sauvegarde automatique</span>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={settings.autoBackup}
-                      onChange={(e) => setSettings({...settings, autoBackup: e.target.checked})}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-teal-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                  </label>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Fréquence de sauvegarde
-                    </label>
-                    <select
-                      value={settings.backupFrequency}
-                      onChange={(e) => setSettings({...settings, backupFrequency: e.target.value})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    >
-                      <option value="hourly">Toutes les heures</option>
-                      <option value="daily">Quotidienne</option>
-                      <option value="weekly">Hebdomadaire</option>
-                      <option value="monthly">Mensuelle</option>
-                    </select>
+                {/* Logo */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Logo du site</h3>
+                  <div className="flex items-start space-x-6">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Télécharger un nouveau logo
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileUpload('logo', e)}
+                          className="hidden"
+                          id="logo-upload"
+                        />
+                        <label
+                          htmlFor="logo-upload"
+                          className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        >
+                          <Upload size={16} />
+                          <span>Choisir un fichier</span>
+                        </label>
+                        <span className="text-sm text-gray-500">PNG, JPG, SVG (max 2MB)</span>
+                      </div>
+                    </div>
+                    {settings.logoUrl && (
+                      <div className="flex-shrink-0">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Aperçu actuel</p>
+                        <div className="w-32 h-16 border border-gray-200 rounded-lg overflow-hidden bg-white flex items-center justify-center">
+                          <img
+                            src={settings.logoUrl}
+                            alt="Logo"
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              target.nextElementSibling!.classList.remove('hidden');
+                            }}
+                          />
+                          <div className="hidden text-gray-400 text-xs text-center">
+                            Erreur de chargement
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Période de rétention (jours)
-                    </label>
-                    <input
-                      type="number"
-                      value={settings.retentionPeriod}
-                      onChange={(e) => setSettings({...settings, retentionPeriod: Number(e.target.value)})}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    />
+                </div>
+
+                {/* Favicon */}
+                <div className="bg-gray-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Favicon</h3>
+                  <div className="flex items-start space-x-6">
+                    <div className="flex-1">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Télécharger un nouveau favicon
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileUpload('favicon', e)}
+                          className="hidden"
+                          id="favicon-upload"
+                        />
+                        <label
+                          htmlFor="favicon-upload"
+                          className="flex items-center space-x-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        >
+                          <Upload size={16} />
+                          <span>Choisir un fichier</span>
+                        </label>
+                        <span className="text-sm text-gray-500">ICO, PNG (16x16 ou 32x32)</span>
+                      </div>
+                    </div>
+                    {settings.faviconUrl && (
+                      <div className="flex-shrink-0">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Aperçu dans l'onglet</p>
+                        <div className="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                          <div className="bg-white rounded-t-lg border border-gray-300 p-2 max-w-48">
+                            <div className="flex items-center space-x-2">
+                              <img
+                                src={settings.faviconUrl}
+                                alt="Favicon"
+                                className="w-4 h-4 object-contain"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                }}
+                              />
+                              <span className="text-xs text-gray-600 truncate">
+                                {settings.siteName}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2 text-center">Simulation d'onglet</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Eye, Edit, Truck, Package, CheckCircle, Clock, Search, Filter, X, MapPin, Calendar, User, Phone, Mail, Download, TrendingUp, ShoppingBag, BarChart3 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Eye, Edit, Truck, Package, CheckCircle, Clock, Search, Filter, X, MapPin, Calendar, User, Phone, Mail, Download, TrendingUp, ShoppingBag, BarChart3, ExternalLink, Copy } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 
 interface Order {
@@ -26,6 +27,7 @@ interface OrderItem {
 
 const OrdersManagement = () => {
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([
     {
       id: 'CMD001',
@@ -175,6 +177,19 @@ const OrdersManagement = () => {
     ));
     
     showToast(`Commande ${orderId} mise à jour vers "${getStatusLabel(nextStatus)}"`, 'success');
+  };
+
+  const goToTracking = (orderId: string) => {
+    navigate(`/order-tracking?order=${orderId}`);
+  };
+
+  const copyTrackingNumber = async (trackingNumber: string) => {
+    try {
+      await navigator.clipboard.writeText(trackingNumber);
+      showToast('Numéro de suivi copié dans le presse-papiers', 'success');
+    } catch (err) {
+      showToast('Erreur lors de la copie', 'error');
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -377,9 +392,9 @@ const OrdersManagement = () => {
                         <Edit size={18} />
                       </button>
                       <button 
-                        onClick={() => updateOrderStatus(order.id)}
+                        onClick={() => goToTracking(order.id)}
                         className="text-blue-600 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition-colors"
-                        title="Changer le statut"
+                        title="Suivi de la commande"
                       >
                         <Truck size={18} />
                       </button>
@@ -402,8 +417,14 @@ const OrdersManagement = () => {
 
       {/* Modal Détails Commande */}
       {showOrderDetails && selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999] p-4"
+          onClick={() => setShowOrderDetails(false)}
+        >
+          <div 
+            className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Commande #{selectedOrder.id}</h2>
@@ -488,14 +509,22 @@ const OrdersManagement = () => {
                 </h3>
                 <div className="space-y-4">
                   {selectedOrder.items.map((item) => (
-                    <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group">
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{item.name}</h4>
+                        <button
+                          onClick={() => navigate(`/product/${item.id}`)}
+                          className="text-left group"
+                        >
+                          <h4 className="font-medium text-gray-900 group-hover:text-teal-600 transition-colors flex items-center">
+                            {item.name}
+                            <ExternalLink size={14} className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </h4>
+                        </button>
                         <p className="text-sm text-gray-600">Quantité: {item.quantity}</p>
                       </div>
                       <div className="text-right">
@@ -504,6 +533,13 @@ const OrdersManagement = () => {
                           Total: {(item.quantity * item.price).toFixed(2)}€
                         </p>
                       </div>
+                      <button
+                        onClick={() => navigate(`/product/${item.id}`)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-teal-600 hover:text-teal-700 hover:bg-teal-50 rounded-lg"
+                        title="Voir le produit"
+                      >
+                        <ExternalLink size={16} />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -516,7 +552,29 @@ const OrdersManagement = () => {
                     <Truck className="mr-2" size={20} />
                     Suivi de livraison
                   </h3>
-                  <p className="font-mono text-lg text-teal-600">{selectedOrder.trackingNumber}</p>
+                  <div className="flex items-center space-x-4">
+                    <button
+                      onClick={() => goToTracking(selectedOrder.id)}
+                      className="font-mono text-lg text-teal-600 hover:text-teal-700 underline hover:no-underline transition-colors"
+                    >
+                      {selectedOrder.trackingNumber}
+                    </button>
+                    <button
+                      onClick={() => copyTrackingNumber(selectedOrder.trackingNumber)}
+                      className="flex items-center space-x-2 px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      title="Copier le numéro"
+                    >
+                      <Copy size={16} />
+                      <span>Copier</span>
+                    </button>
+                    <button
+                      onClick={() => goToTracking(selectedOrder.id)}
+                      className="flex items-center space-x-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+                    >
+                      <Truck size={16} />
+                      <span>Suivre la commande</span>
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -533,8 +591,14 @@ const OrdersManagement = () => {
 
       {/* Modal Modification Commande */}
       {showEditOrder && selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999] p-4"
+          onClick={() => setShowEditOrder(false)}
+        >
+          <div 
+            className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900">Modifier la commande #{selectedOrder.id}</h2>
               <button 

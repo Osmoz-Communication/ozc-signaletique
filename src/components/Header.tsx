@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Heart, User, ShoppingCart, Menu, X, ChevronDown } from 'lucide-react';
+import { Search, Heart, User, ShoppingCart, Menu, X, ChevronDown, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,7 +10,8 @@ const Header = () => {
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
-  const { cartItems } = useCart();
+  const [showCartModal, setShowCartModal] = useState(false);
+  const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -297,17 +298,17 @@ const Header = () => {
   ];
 
   return (
-    <div className="bg-white shadow-sm">
-      {/* Top Bar */}
-      <div className="bg-teal-500 text-white py-2">
+    <div className="bg-white shadow-sm sticky top-0 z-50">
+        {/* Top Bar */}
+        <div className="bg-ozc-500 text-white py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center text-sm">
-            <span>Livraison gratuite à partir de 300 euros d'achat</span>
-            <div className="flex space-x-4">
-              <Link to="/account/orders" className="hover:text-teal-200 transition-colors">
+          <div className="flex flex-col sm:flex-row justify-between items-center text-sm gap-2">
+            <span className="text-center sm:text-left">Livraison gratuite à partir de 300 euros d'achat</span>
+            <div className="flex space-x-3 sm:space-x-4 text-xs sm:text-sm">
+              <Link to="/account/orders" className="hover:text-teal-200 transition-colors whitespace-nowrap">
                 Suivre ma commande
               </Link>
-              <Link to="/account/wishlist" className="hover:text-teal-200 transition-colors">
+              <Link to="/account/wishlist" className="hover:text-teal-200 transition-colors whitespace-nowrap">
                 Mes favoris
               </Link>
             </div>
@@ -317,21 +318,21 @@ const Header = () => {
 
       {/* Main Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">OZC</span>
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-teal-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg sm:text-xl">OZC</span>
             </div>
-            <div>
+            <div className="hidden sm:block">
               <div className="font-bold text-xl text-gray-900">OZC</div>
               <div className="text-sm text-teal-500 font-medium">SIGNALÉTIQUE</div>
             </div>
           </Link>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-8 relative">
-            <form onSubmit={handleSearch} className="relative">
+          {/* Search Bar - Hidden on small screens */}
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8 relative">
+            <form onSubmit={handleSearch} className="relative w-full">
               <input
                 type="text"
                 placeholder="Rechercher un produit, une référence..."
@@ -536,43 +537,106 @@ const Header = () => {
           </div>
 
           {/* Right Icons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             <Link
               to="/account/wishlist"
-              className="relative p-2 text-gray-600 hover:text-teal-500 transition-colors"
+              className="relative p-1.5 sm:p-2 text-gray-600 hover:text-teal-500 transition-colors"
             >
-              <Heart size={24} />
-              <span className="absolute -top-1 -right-1 bg-teal-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <Heart size={20} className="sm:w-6 sm:h-6" />
+              <span className="absolute -top-1 -right-1 bg-teal-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs">
                 1
               </span>
             </Link>
             
             <Link
               to="/account"
-              className="p-2 text-gray-600 hover:text-teal-500 transition-colors"
+              className="p-1.5 sm:p-2 text-gray-600 hover:text-teal-500 transition-colors"
             >
-              <User size={24} />
+              <User size={20} className="sm:w-6 sm:h-6" />
             </Link>
             
-            <Link
-              to="/cart"
-              className="relative p-2 text-gray-600 hover:text-teal-500 transition-colors"
+            <button
+              onClick={() => setShowCartModal(!showCartModal)}
+              className="relative p-1.5 sm:p-2 text-gray-600 hover:text-teal-500 transition-colors"
             >
-              <ShoppingCart size={24} />
+              <ShoppingCart size={20} className="sm:w-6 sm:h-6" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-teal-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-teal-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center text-xs">
                   {cartItems.length}
                 </span>
               )}
-            </Link>
+            </button>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-600 hover:text-teal-500 transition-colors"
+              className="md:hidden p-1.5 sm:p-2 text-gray-600 hover:text-teal-500 transition-colors"
             >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Search Bar */}
+      <div className="md:hidden bg-gray-50 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-3">
+          <form onSubmit={handleSearch} className="relative">
+            <input
+              type="text"
+              placeholder="Rechercher un produit..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onFocus={() => searchQuery.length > 1 && setShowSearchResults(true)}
+              onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
+              className="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 text-gray-400 hover:text-teal-500 transition-colors"
+            >
+              <Search size={18} />
+            </button>
+          </form>
+
+          {/* Mobile Search Results */}
+          {showSearchResults && searchResults.length > 0 && (
+            <div className="absolute left-4 right-4 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto">
+              <div className="p-2">
+                {searchResults.slice(0, 5).map((result, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleResultClick(result)}
+                    className="w-full flex items-center space-x-3 p-2 hover:bg-gray-50 transition-colors text-left rounded"
+                  >
+                    <div className="w-8 h-8 bg-teal-100 rounded flex items-center justify-center flex-shrink-0">
+                      <Search size={12} className="text-teal-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {result.name}
+                      </p>
+                      {result.type === 'product' && (
+                        <p className="text-xs text-gray-500 truncate">
+                          {result.category}
+                        </p>
+                      )}
+                    </div>
+                  </button>
+                ))}
+                {searchResults.length > 5 && (
+                  <button
+                    onClick={() => {
+                      setShowSearchResults(false);
+                      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+                    }}
+                    className="w-full text-center py-2 text-xs text-teal-600 hover:text-teal-700 font-medium border-t"
+                  >
+                    Voir tous les résultats
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -583,18 +647,23 @@ const Header = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="hidden md:flex py-4">
-            {/* Megamenu Categories */}
-            {Object.entries(megaMenuData).map(([key, category]) => (
+            {/* Megamenu Categories - Ordre spécifique */}
+            {[
+              'signaletique-interne', 
+              'signaletique-externe',
+              'signalisation-securite',
+              'accessibilite'
+            ].map((key) => (
               <div
                 key={key}
                 className="relative group"
               >
                 <Link
-                  to={category.href}
+                  to={megaMenuData[key as keyof typeof megaMenuData].href}
                   className="flex items-center px-4 py-2 text-gray-300 hover:text-white transition-colors duration-200 font-medium"
                   onMouseEnter={() => setActiveMegaMenu(key)}
                 >
-                  {category.name}
+                  {megaMenuData[key as keyof typeof megaMenuData].name}
                   <ChevronDown size={16} className="ml-1" />
                 </Link>
               </div>
@@ -614,7 +683,7 @@ const Header = () => {
         </div>
 
         {/* Megamenu Dropdown */}
-        {activeMegaMenu && megaMenuData[activeMegaMenu] && (
+        {activeMegaMenu && megaMenuData[activeMegaMenu as keyof typeof megaMenuData] && (
           <div
             className="absolute top-full left-0 w-full bg-white shadow-2xl z-50 border-t-4 border-teal-500"
             onMouseEnter={() => setActiveMegaMenu(activeMegaMenu)}
@@ -623,10 +692,10 @@ const Header = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {megaMenuData[activeMegaMenu].name}
+                  {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].name}
                 </h3>
                 <Link
-                  to={megaMenuData[activeMegaMenu].href}
+                  to={megaMenuData[activeMegaMenu as keyof typeof megaMenuData].href}
                   className="text-teal-600 hover:text-teal-700 font-medium"
                 >
                   Voir toute la catégorie →
@@ -634,7 +703,7 @@ const Header = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {megaMenuData[activeMegaMenu].subcategories.map((subcategory, index) => (
+                {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].subcategories.map((subcategory: any, index: number) => (
                   <Link
                     key={index}
                     to={subcategory.href}
@@ -652,7 +721,7 @@ const Header = () => {
                         {subcategory.name}
                       </h4>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        {subcategory.items.slice(0, 3).map((item, itemIndex) => (
+                        {subcategory.items.slice(0, 3).map((item: string, itemIndex: number) => (
                           <li key={itemIndex} className="hover:text-teal-600 transition-colors">
                             • {item}
                           </li>
@@ -673,47 +742,29 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-gray-900 py-4">
-            <div className="px-4 space-y-2">
-              {Object.entries(megaMenuData).map(([key, category]) => (
-                <div key={key}>
-                  <Link
-                    to={category.href}
-                    className="block py-2 text-gray-300 hover:text-white transition-colors font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {category.name}
-                  </Link>
-                  <div className="ml-4 space-y-1">
-                    {category.subcategories.map((subcategory, index) => (
-                      <div key={index}>
-                        <Link
-                          to={subcategory.href}
-                          className="block py-1 text-sm text-gray-400 hover:text-gray-300 transition-colors"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {subcategory.name}
-                        </Link>
-                        <div className="ml-4 space-y-1">
-                          {subcategory.items.map((item, itemIndex) => (
-                            <div
-                              key={itemIndex}
-                              className="block py-1 text-xs text-gray-500"
-                            >
-                              • {item}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          <div className="md:hidden bg-gray-900 bg-opacity-95 backdrop-blur-sm py-6 relative z-50">
+            <div className="px-4 space-y-3 text-center">
+              {/* Ordre spécifique des catégories principales */}
+              {[
+                'signaletique-interne', 
+                'signaletique-externe',
+                'signalisation-securite',
+                'accessibilite'
+              ].map((key) => (
+                <Link
+                  key={key}
+                  to={megaMenuData[key as keyof typeof megaMenuData].href}
+                  className="block py-3 text-gray-300 hover:text-white transition-colors font-medium text-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {megaMenuData[key as keyof typeof megaMenuData].name}
+                </Link>
               ))}
               {simpleCategories.map((category) => (
                 <Link
                   key={category.name}
                   to={category.href}
-                  className="block py-2 text-gray-300 hover:text-white transition-colors"
+                  className="block py-3 text-gray-300 hover:text-white transition-colors font-medium text-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {category.name}
@@ -723,6 +774,181 @@ const Header = () => {
           </div>
         )}
       </nav>
+
+      {/* Cart Modal */}
+      {showCartModal && (
+        <div className="fixed inset-0 z-50">
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-transparent"
+            onClick={() => setShowCartModal(false)}
+          ></div>
+          
+          {/* Modal positioned under cart icon */}
+          <div className="absolute top-20 right-4 sm:right-6 lg:right-8">
+            <div className="relative w-96 max-w-[calc(100vw-2rem)]">
+              {/* Modal content */}
+              <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                {cartItems.length === 0 ? (
+                  // Empty cart
+                  <div className="p-8 text-center">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <ShoppingCart size={32} className="text-gray-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Votre panier est vide</h3>
+                    <p className="text-gray-600 mb-6 text-sm">Découvrez nos produits de signalétique professionnelle</p>
+                    <button
+                      onClick={() => {
+                        setShowCartModal(false);
+                        navigate('/products');
+                      }}
+                      className="w-full bg-gradient-to-r from-teal-600 to-teal-700 text-white py-2.5 px-4 rounded-lg font-semibold hover:from-teal-700 hover:to-teal-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                    >
+                      Découvrir nos produits
+                    </button>
+                  </div>
+                ) : (
+                  // Cart with items
+                  <>
+                    {/* Header */}
+                    <div className="p-4 border-b border-gray-100/80 bg-gradient-to-r from-gray-50/50 to-teal-50/30">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                            <ShoppingCart size={16} className="text-teal-600" />
+                          </div>
+                          <h3 className="text-base font-semibold text-gray-900">Mon Panier</h3>
+                        </div>
+                        <button
+                          onClick={() => setShowCartModal(false)}
+                          className="p-1.5 hover:bg-white/80 rounded-full transition-colors"
+                        >
+                          <X size={16} className="text-gray-500" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Cart Items */}
+                    <div className="max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                      <div className="p-4 space-y-4">
+                        {cartItems.slice(0, 3).map((item) => (
+                          <div key={item.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50/50 transition-colors">
+                            <div className="relative">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-14 h-14 object-cover rounded-lg flex-shrink-0 shadow-sm"
+                              />
+                              <div className="absolute -top-1 -right-1 w-5 h-5 bg-teal-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+                                {item.quantity}
+                              </div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-2">
+                                <h4 className="text-sm font-medium text-gray-900 line-clamp-2 leading-tight flex-1 pr-2">{item.name}</h4>
+                                <button
+                                  onClick={() => removeFromCart(item.id)}
+                                  className="p-1 hover:bg-red-50 text-red-400 hover:text-red-600 rounded-full transition-colors flex-shrink-0"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-1">
+                                  <button
+                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                    className="w-6 h-6 flex items-center justify-center border border-gray-200 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                                    disabled={item.quantity <= 1}
+                                  >
+                                    <Minus size={10} />
+                                  </button>
+                                  <span className="text-sm font-medium min-w-[24px] text-center bg-gray-50 px-2 py-1 rounded-md">{item.quantity}</span>
+                                  <button
+                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                    className="w-6 h-6 flex items-center justify-center border border-gray-200 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                                  >
+                                    <Plus size={10} />
+                                  </button>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-xs text-gray-500">{(item.price / 1.2).toFixed(2)}€ HT</div>
+                                  <div className="text-sm font-bold text-teal-600">{item.price}€ TTC</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        {cartItems.length > 3 && (
+                          <div className="text-center py-2">
+                            <button
+                              onClick={() => {
+                                setShowCartModal(false);
+                                navigate('/cart');
+                              }}
+                              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                            >
+                              Voir {cartItems.length - 3} article{cartItems.length - 3 > 1 ? 's' : ''} de plus
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="p-4 border-t border-gray-100/80 bg-gradient-to-r from-gray-50/30 to-teal-50/20">
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Sous-total HT</span>
+                          <span className="text-sm font-medium text-gray-900">{(getCartTotal() / 1.2).toFixed(2)}€</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">TVA (20%)</span>
+                          <span className="text-sm font-medium text-gray-900">{(getCartTotal() - getCartTotal() / 1.2).toFixed(2)}€</span>
+                        </div>
+                        <div className="flex items-center justify-between border-t border-gray-100 pt-2">
+                          <span className="text-base font-semibold text-gray-900">Total TTC</span>
+                          <span className="text-lg font-bold text-teal-600">{getCartTotal().toFixed(2)}€</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => {
+                            setShowCartModal(false);
+                            navigate('/cart');
+                          }}
+                          className="w-full bg-gradient-to-r from-teal-600 to-teal-700 text-white py-2.5 px-4 rounded-lg font-semibold hover:from-teal-700 hover:to-teal-800 transition-all duration-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                        >
+                          Voir le panier
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowCartModal(false);
+                            navigate('/checkout');
+                          }}
+                          className="w-full border-2 border-teal-600 text-teal-600 py-2.5 px-4 rounded-lg font-semibold hover:bg-teal-50 transition-all duration-200"
+                        >
+                          Commander maintenant
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Overlay pour le menu mobile - ne couvre que le contenu sous le header */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          style={{ top: '100%' }}
+          onClick={() => setMobileMenuOpen(false)}
+        ></div>
+      )}
     </div>
   );
 };

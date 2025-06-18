@@ -242,6 +242,12 @@ const OrderDetailPage = () => {
     showToast(`${product.name} ajouté au panier !`, 'success');
   };
 
+  const trackPackage = (trackingNumber: string) => {
+    // Redirection vers la page de suivi interne
+    navigate(`/account/orders?tracking=${trackingNumber}`);
+    showToast('Redirection vers le suivi de votre colis...', 'info');
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'Livré': return <CheckCircle className="text-green-600" size={20} />;
@@ -406,7 +412,11 @@ const OrderDetailPage = () => {
                       <p className="text-sm font-medium text-blue-900">Numéro de suivi</p>
                       <p className="text-blue-700 font-mono">{order.trackingNumber}</p>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <button 
+                      onClick={() => trackPackage(order.trackingNumber)}
+                      className="flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+                    >
+                      <Truck size={16} className="mr-1" />
                       Suivre le colis
                     </button>
                   </div>

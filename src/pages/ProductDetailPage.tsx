@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronDown, Star, Truck, Shield, Heart, Minus, Plus } from 'lucide-react';
+import { ChevronDown, Star, Truck, Shield, Heart, Minus, Plus, Package, ShoppingCart, Gift } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
 import { products } from '../data/products';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState('description');
 
@@ -27,6 +29,24 @@ const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     addToCart({ ...product, quantity });
+    showToast(`${product.name} ajouté au panier !`, 'success');
+  };
+
+  const handleAddPackToCart = () => {
+    // Ajouter le produit principal
+    addToCart({ ...product, quantity: 1 });
+    
+    // Ajouter les produits complémentaires du pack
+    relatedProducts.slice(0, 2).forEach(relatedProduct => {
+      addToCart({ ...relatedProduct, quantity: 1 });
+    });
+    
+    showToast('Pack complet ajouté au panier !', 'success');
+  };
+
+  const handleAddRelatedToCart = (relatedProduct: any) => {
+    addToCart({ ...relatedProduct, quantity: 1 });
+    showToast(`${relatedProduct.name} ajouté au panier !`, 'success');
   };
 
   const relatedProducts = products.filter(p => 
@@ -283,7 +303,7 @@ const ProductDetailPage = () => {
                     <div className="bg-teal-50 p-4 rounded-lg">
                       <h4 className="font-semibold text-teal-800 mb-2">Installation et maintenance</h4>
                       <p className="text-teal-700 text-sm">
-                        Nos produits sont livrés avec tous les éléments de fixation nécessaires et une notice d'installation détaillée. 
+                        Les fixations sont disponibles en supplément selon vos besoins spécifiques. 
                         Pour les installations complexes, notre équipe technique peut vous accompagner sur site.
                       </p>
                     </div>
@@ -357,78 +377,134 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
-        {/* Upsell Section */}
-        <div className="bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl p-8 mb-16">
+        {/* Upsell Section - Pack Premium */}
+        <div className="bg-gradient-to-br from-teal-50 via-blue-50 to-purple-50 rounded-2xl p-8 mb-16 border border-teal-200">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Complétez votre achat</h2>
-            <p className="text-gray-600">Ces produits sont souvent achetés ensemble</p>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full mb-4">
+              <Package className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Pack Professionnel</h2>
+            <p className="text-gray-600 text-lg">Ensemble complet pour une solution optimale</p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            {/* Produit principal */}
-            <div className="bg-white rounded-lg p-6 shadow-sm border-2 border-teal-200">
-              <div className="text-center">
-                <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded-lg mx-auto mb-4" />
-                <h3 className="font-semibold text-sm mb-2">{product.name}</h3>
-                <p className="text-teal-600 font-bold">
-                  {product.priceTTC ? `${product.priceTTC.toFixed(2)}€` : `${product.price}€`}
-                </p>
-                <span className="text-xs text-gray-500 bg-teal-100 px-2 py-1 rounded-full mt-2 inline-block">
-                  Dans votre panier
-                </span>
+          {/* Pack Preview */}
+          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+              {/* Produit principal */}
+              <div className="relative">
+                <div className="bg-gradient-to-r from-teal-500 to-blue-500 text-white text-xs px-3 py-1 rounded-full absolute -top-2 -right-2 z-10">
+                  Principal
+                </div>
+                <div className="bg-teal-50 rounded-xl p-4 border-2 border-teal-200">
+                  <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-lg mx-auto mb-3" />
+                  <h3 className="font-semibold text-sm text-center mb-2 line-clamp-2">{product.name}</h3>
+                  <p className="text-teal-600 font-bold text-center">
+                    {product.priceTTC ? `${product.priceTTC.toFixed(2)}€` : `${product.price}€`}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Plus */}
-            <div className="text-center">
-              <div className="w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center mx-auto font-bold">
-                +
-              </div>
-            </div>
-
-            {/* Produits complémentaires */}
-            <div className="space-y-4">
-              {relatedProducts.slice(0, 2).map((relatedProduct) => (
-                <div key={relatedProduct.id} className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 hover:border-teal-300 transition-colors">
-                  <div className="flex items-center space-x-4">
-                    <img src={relatedProduct.image} alt={relatedProduct.name} className="w-16 h-16 object-cover rounded-lg" />
-                    <div className="flex-1">
-                      <h4 className="font-medium text-sm mb-1">{relatedProduct.name}</h4>
-                      <p className="text-teal-600 font-bold text-sm">
-                        {relatedProduct.priceTTC ? `${relatedProduct.priceTTC.toFixed(2)}€` : `${relatedProduct.price}€`}
-                      </p>
-                    </div>
-                    <button className="bg-teal-600 text-white px-3 py-1 rounded text-xs hover:bg-teal-700 transition-colors">
-                      Ajouter
+              {/* Produits complémentaires */}
+              {relatedProducts.slice(0, 2).map((relatedProduct, index) => (
+                <div key={relatedProduct.id} className="relative">
+                  <div className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full absolute -top-2 -right-2 z-10">
+                    +{index + 1}
+                  </div>
+                  <div className="bg-blue-50 rounded-xl p-4 border-2 border-blue-200 hover:border-blue-300 transition-colors">
+                    <img src={relatedProduct.image} alt={relatedProduct.name} className="w-20 h-20 object-cover rounded-lg mx-auto mb-3" />
+                    <h4 className="font-medium text-sm text-center mb-2 line-clamp-2">{relatedProduct.name}</h4>
+                    <p className="text-blue-600 font-bold text-center text-sm">
+                      {relatedProduct.priceTTC ? `${relatedProduct.priceTTC.toFixed(2)}€` : `${relatedProduct.price}€`}
+                    </p>
+                    <button 
+                      onClick={() => handleAddRelatedToCart(relatedProduct)}
+                      className="w-full mt-2 bg-blue-600 text-white py-1 px-2 rounded-lg text-xs hover:bg-blue-700 transition-colors flex items-center justify-center space-x-1"
+                    >
+                      <ShoppingCart size={12} />
+                      <span>Ajouter seul</span>
                     </button>
                   </div>
                 </div>
               ))}
+
+              {/* Bonus gratuit */}
+              <div className="relative">
+                <div className="bg-green-500 text-white text-xs px-3 py-1 rounded-full absolute -top-2 -right-2 z-10">
+                  Gratuit
+                </div>
+                <div className="bg-green-50 rounded-xl p-4 border-2 border-green-200">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg mx-auto mb-3 flex items-center justify-center">
+                    <Gift className="w-10 h-10 text-white" />
+                  </div>
+                  <h4 className="font-medium text-sm text-center mb-2">Kit de fixation</h4>
+                  <p className="text-green-600 font-bold text-center text-sm">Offert</p>
+                  <p className="text-xs text-gray-500 text-center mt-1">Valeur 15€</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Bundle offer */}
-          <div className="mt-8 bg-white rounded-lg p-6 border-2 border-dashed border-teal-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-bold text-lg text-gray-900">Offre groupée</h3>
-                <p className="text-gray-600 text-sm">Achetez les 3 produits ensemble et économisez</p>
+          {/* Pack Pricing */}
+          <div className="bg-white rounded-xl p-6 shadow-lg border-2 border-gradient-to-r from-teal-200 to-blue-200">
+            <div className="flex flex-col lg:flex-row items-center justify-between">
+              <div className="mb-4 lg:mb-0">
+                <div className="flex items-center space-x-3 mb-2">
+                  <h3 className="text-2xl font-bold text-gray-900">Pack Complet</h3>
+                  <span className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-sm px-3 py-1 rounded-full font-bold">
+                    -15% ÉCONOMIE
+                  </span>
+                </div>
+                <p className="text-gray-600">3 produits + kit de fixation gratuit</p>
+                <div className="flex items-center space-x-2 mt-2">
+                  <span className="text-sm text-gray-500 line-through">
+                    {(Number(product.priceTTC || product.price) + 
+                      relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0) + 15).toFixed(2)}€
+                  </span>
+                  <span className="text-xs text-gray-500">Prix séparé</span>
+                </div>
               </div>
-              <div className="text-right">
-                <div className="text-gray-500 line-through text-sm">
-                  {(Number(product.priceTTC || product.price) + 
-                    relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0)).toFixed(2)}€
-                </div>
-                <div className="text-2xl font-bold text-teal-600">
+              
+              <div className="text-center lg:text-right">
+                <div className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
                   {((Number(product.priceTTC || product.price) + 
-                    relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0)) * 0.9).toFixed(2)}€
+                    relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0)) * 0.85).toFixed(2)}€
                 </div>
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">-10%</span>
+                <button 
+                  onClick={handleAddPackToCart}
+                  className="bg-gradient-to-r from-teal-600 to-blue-600 text-white py-3 px-8 rounded-xl font-bold hover:from-teal-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg flex items-center space-x-2"
+                >
+                  <Package size={20} />
+                  <span>Ajouter le pack au panier</span>
+                </button>
+                <p className="text-xs text-gray-500 mt-2">Vous économisez {((Number(product.priceTTC || product.price) + 
+                  relatedProducts.slice(0, 2).reduce((sum, p) => sum + Number(p.priceTTC || p.price), 0) + 15) * 0.15).toFixed(2)}€</p>
               </div>
             </div>
-            <button className="w-full mt-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-teal-700 hover:to-blue-700 transition-all">
-              Ajouter le pack au panier
-            </button>
+          </div>
+
+          {/* Pack Benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="text-center p-4 bg-white/50 rounded-lg">
+              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Package className="w-6 h-6 text-teal-600" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Solution complète</h4>
+              <p className="text-sm text-gray-600">Tout ce dont vous avez besoin en un seul achat</p>
+            </div>
+            <div className="text-center p-4 bg-white/50 rounded-lg">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Gift className="w-6 h-6 text-blue-600" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Kit de fixation offert</h4>
+              <p className="text-sm text-gray-600">Installation facilitée avec le matériel inclus</p>
+            </div>
+            <div className="text-center p-4 bg-white/50 rounded-lg">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-green-600 font-bold text-lg">15%</span>
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-1">Économie garantie</h4>
+              <p className="text-sm text-gray-600">Prix réduit par rapport à l'achat séparé</p>
+            </div>
           </div>
         </div>
 

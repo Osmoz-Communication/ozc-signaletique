@@ -468,12 +468,13 @@ const ProductsPage = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Explorez nos spécialités</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {currentSubcategory.subSubcategories.map((subSubcategory, index) => (
-                <div
+                <Link
                   key={index}
-                  className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-teal-200"
+                  to={`/products/${category}/${subcategory}/${subSubcategory.slug}`}
+                  className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 hover:border-teal-200 cursor-pointer"
                 >
                   <div className="p-6">
-                    <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl mb-4 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-white font-bold text-xl">
                         {subSubcategory.name.charAt(0)}
                       </span>
@@ -493,7 +494,7 @@ const ProductsPage = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

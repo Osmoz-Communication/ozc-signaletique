@@ -13,7 +13,12 @@ import {
   Search,
   Menu,
   X,
-  TrendingUp
+  TrendingUp,
+  Calculator,
+  Download,
+  Image,
+  MessageSquare,
+  Mail
 } from 'lucide-react';
 import Dashboard from '../components/admin/Dashboard';
 import ProductsManagement from '../components/admin/ProductsManagement';
@@ -22,6 +27,11 @@ import CustomersManagement from '../components/admin/CustomersManagement';
 import SettingsManagement from '../components/admin/SettingsManagement';
 import AdminProfile from '../components/admin/AdminProfile';
 import TopProducts from '../components/admin/TopProducts';
+import PricingMatrix from '../components/admin/PricingMatrix';
+import CataloguesManagement from '../components/admin/CataloguesManagement';
+import SliderManagement from '../components/admin/SliderManagement';
+import MessagesManagement from '../components/admin/MessagesManagement';
+import NewsletterManagement from '../components/admin/NewsletterManagement';
 
 const AdminPage = () => {
   const location = useLocation();
@@ -73,6 +83,11 @@ const AdminPage = () => {
     { id: 'products', label: 'Produits', icon: Package },
     { id: 'orders', label: 'Commandes', icon: ShoppingCart },
     { id: 'customers', label: 'Clients', icon: Users },
+    { id: 'messages', label: 'Messages', icon: MessageSquare },
+    { id: 'newsletter', label: 'Newsletter', icon: Mail },
+    { id: 'pricing-matrix', label: 'Matrice de prix', icon: Calculator },
+    { id: 'catalogues', label: 'Catalogues', icon: Download },
+    { id: 'slider', label: 'Slider accueil', icon: Image },
     { id: 'top-products', label: 'Top Produits', icon: TrendingUp },
     { id: 'settings', label: 'Paramètres', icon: Settings }
   ];
@@ -90,14 +105,26 @@ const AdminPage = () => {
         return <ProductsManagement />;
       case 'orders':
         return <OrdersManagement />;
-      case 'customers':
-        return <CustomersManagement />;
+                      case 'customers':
+                  return <CustomersManagement />;
+                case 'pricing':
+                  return <PricingMatrix />;
       case 'top-products':
         return <TopProducts />;
       case 'profile':
         return <AdminProfile />;
       case 'settings':
         return <SettingsManagement />;
+      case 'pricing-matrix':
+        return <PricingMatrix />;
+      case 'catalogues':
+        return <CataloguesManagement />;
+      case 'slider':
+        return <SliderManagement />;
+      case 'messages':
+        return <MessagesManagement />;
+      case 'newsletter':
+        return <NewsletterManagement />;
       default:
         return <Dashboard />;
     }

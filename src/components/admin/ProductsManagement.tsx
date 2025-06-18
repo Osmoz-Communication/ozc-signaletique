@@ -633,7 +633,10 @@ const ProductsManagement = () => {
 
       {/* Modal Ajout Produit */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999] p-4"
+          onClick={closeAllModals}
+        >
           <div 
             className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
@@ -1198,8 +1201,14 @@ const ProductsManagement = () => {
 
       {/* Modal Modification Produit */}
       {showEditModal && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
+          onClick={closeAllModals}
+        >
+          <div 
+            className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Modifier le produit</h2>
               <button 
@@ -1287,8 +1296,14 @@ const ProductsManagement = () => {
 
       {/* Modal Suppression */}
       {showDeleteModal && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
+          onClick={closeAllModals}
+        >
+          <div 
+            className="bg-white rounded-lg p-6 w-full max-w-md"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-gray-900">Confirmer la suppression</h2>
               <button 
@@ -1324,8 +1339,14 @@ const ProductsManagement = () => {
 
       {/* Modal Offre Groupée */}
       {showBundleModal && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999]"
+          onClick={closeAllModals}
+        >
+          <div 
+            className="bg-white rounded-lg p-6 w-full max-w-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">
                 Configurer l'offre groupée - {selectedProduct.name}

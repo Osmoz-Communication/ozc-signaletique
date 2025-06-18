@@ -12,7 +12,8 @@ export const products: Product[] = [
     sku: 'SEC-LED-001',
     category: 'signalisation-securite',
     subcategory: 'securite-incendie',
-    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'sorties-secours',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '2',
@@ -24,7 +25,8 @@ export const products: Product[] = [
     sku: 'EXT-CO2-002',
     category: 'signalisation-securite',
     subcategory: 'securite-incendie',
-    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'extincteurs',
+    image: 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '3',
@@ -36,7 +38,8 @@ export const products: Product[] = [
     sku: 'RAS-EVA-003',
     category: 'signalisation-securite',
     subcategory: 'securite-incendie',
-    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'points-rassemblement',
+    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '4',
@@ -48,7 +51,8 @@ export const products: Product[] = [
     sku: 'ALR-INC-004',
     category: 'signalisation-securite',
     subcategory: 'securite-incendie',
-    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'alarmes-incendie',
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '5',
@@ -60,7 +64,34 @@ export const products: Product[] = [
     sku: 'SEC-MED-005',
     category: 'signalisation-securite',
     subcategory: 'securite-incendie',
-    image: 'https://images.pexels.com/photos/4792503/pexels-photo-4792503.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'premiers-secours',
+    image: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=400&h=300&fit=crop&crop=center'
+  },
+  {
+    id: '50',
+    name: 'Extincteur Poudre ABC 6kg',
+    description: 'Extincteur poudre ABC 6kg avec support mural et panneau de signalisation',
+    price: 89.90,
+    priceHT: 74.92,
+    priceTTC: 89.90,
+    sku: 'EXT-ABC-050',
+    category: 'signalisation-securite',
+    subcategory: 'securite-incendie',
+    specialty: 'extincteurs',
+    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
+  },
+  {
+    id: '51',
+    name: 'Éclairage de Secours LED',
+    description: 'Bloc éclairage de secours LED avec batterie lithium et test automatique',
+    price: 125.50,
+    priceHT: 104.58,
+    priceTTC: 125.50,
+    sku: 'ECL-SEC-051',
+    category: 'signalisation-securite',
+    subcategory: 'securite-incendie',
+    specialty: 'sorties-secours',
+    image: 'https://images.pexels.com/photos/4917727/pexels-photo-4917727.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
 
   // Signalisation de sécurité - Panneaux d'interdiction
@@ -74,7 +105,8 @@ export const products: Product[] = [
     sku: 'INT-FUM-006',
     category: 'signalisation-securite',
     subcategory: 'panneaux-interdiction',
-    image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'interdiction-fumer',
+    image: 'https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '7',
@@ -86,7 +118,8 @@ export const products: Product[] = [
     sku: 'INT-ACC-007',
     category: 'signalisation-securite',
     subcategory: 'panneaux-interdiction',
-    image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'acces-interdit',
+    image: 'https://images.unsplash.com/photo-1572021335469-31706a17aaef?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '8',
@@ -97,7 +130,8 @@ export const products: Product[] = [
     priceTTC: 13.75,
     category: 'signalisation-securite',
     subcategory: 'panneaux-interdiction',
-    image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400'
+    specialty: 'interdiction-telephoner',
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '9',
@@ -108,6 +142,7 @@ export const products: Product[] = [
     priceTTC: 17.85,
     category: 'signalisation-securite',
     subcategory: 'panneaux-interdiction',
+    specialty: 'defense-entrer',
     image: 'https://images.pexels.com/photos/4919730/pexels-photo-4919730.jpeg?auto=compress&cs=tinysrgb&w=400'
   },
 
@@ -122,7 +157,7 @@ export const products: Product[] = [
     sku: 'DAN-ELE-010',
     category: 'signalisation-securite',
     subcategory: 'panneaux-danger',
-    image: 'https://images.pexels.com/photos/4919731/pexels-photo-4919731.jpeg?auto=compress&cs=tinysrgb&w=400'
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=300&fit=crop&crop=center'
   },
   {
     id: '11',

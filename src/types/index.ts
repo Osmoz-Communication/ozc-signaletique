@@ -8,6 +8,7 @@ export interface Product {
   sku: string; // UGS - Unité de Gestion de Stock
   category: string;
   subcategory?: string;
+  specialty?: string;
   image: string;
 }
 

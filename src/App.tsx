@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Newsletter from './components/Newsletter';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
@@ -20,9 +21,22 @@ import AdminLoginPage from './pages/AdminLoginPage';
 import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
 import CustomPage from './pages/CustomPage';
 import CustomizationPage from './pages/CustomizationPage';
+import SpecialtyDetailPage from './pages/SpecialtyDetailPage';
+import CataloguesPage from './pages/CataloguesPage';
+import ContactPage from './pages/ContactPage';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const AppContent = () => {
   const location = useLocation();
@@ -30,6 +44,7 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <ScrollToTop />
       {!isAdminRoute && <Header />}
       <main className={isAdminRoute ? 'min-h-screen' : 'min-h-screen'}>
         <Routes>
@@ -37,6 +52,7 @@ const AppContent = () => {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:category" element={<ProductsPage />} />
           <Route path="/products/:category/:subcategory" element={<ProductsPage />} />
+          <Route path="/products/:category/:subcategory/:specialty" element={<SpecialtyDetailPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
@@ -50,6 +66,8 @@ const AppContent = () => {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/custom" element={<CustomPage />} />
           <Route path="/custom/:categoryId" element={<CustomizationPage />} />
+          <Route path="/catalogues" element={<CataloguesPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/osmozcom77120" element={
             <AdminProtectedRoute>
@@ -58,6 +76,7 @@ const AppContent = () => {
           } />
         </Routes>
       </main>
+      {!isAdminRoute && <Newsletter />}
       {!isAdminRoute && <Footer />}
     </div>
   );
